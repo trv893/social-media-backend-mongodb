@@ -25,7 +25,7 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
    // Update a current User by ID
- updateUsers(req, res) {
+ updateUser(req, res) {
   Users.findOneAndUpdate({_id: req.params.id}, req.body, {new: true, runValidators: true})
   .then(dbUsersData => {
       if(!dbUsersData) {
