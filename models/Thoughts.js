@@ -1,6 +1,6 @@
-const { Schema, model } = require('mongoose');
-const Friends = require('./Friends');
-const Reactions = require('./Reactions');
+const { Schema, model } = require("mongoose");
+const reactionSchema = require("./Reactions");
+const moment = require('moment');
 
 // Schema to create Post model
 const thoughtsSchema = new Schema(
@@ -14,25 +14,23 @@ const thoughtsSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
+      get: (createdAtVal) => moment(createdAtVal).format('MMM DD, YYYY [at] hh:mm a')
     },
     username: {
       type: String,
       required: true,
-  },
+    },
     description: {
       type: String,
       minLength: 15,
       maxLength: 500,
     },
-    reactions: [
-      {
-        ref: 'reactions',
-      },
-    ],
+    reactions: [reactionSchema],
   },
   {
     toJSON: {
       virtuals: true,
+      getters: true,
     },
     id: false,
   }
@@ -40,13 +38,12 @@ const thoughtsSchema = new Schema(
 
 // Create a virtual property `getFriendss` that gets the amount of friendss associated with an thoughts
 thoughtsSchema
-  .virtual('reactionCount')
-  // Getter
+  .virtual("reactionCount")
   .get(function () {
     return this.reactions.length;
   });
 
 // Initialize our thoughts model
-const Thoughts = model('thoughts', thoughtsSchema);
+const Thoughts = model("Thoughts", thoughtsSchema);
 
 module.exports = Thoughts;

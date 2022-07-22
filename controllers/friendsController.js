@@ -20,7 +20,7 @@ module.exports = {
     Friends.create(req.body)
       .then((friend) => {
         return User.findOneAndUpdate(
-          { _id: req.body.userId },
+          { _id: req.body.id },
           { $addToSet: { friends: friend._id } },
           { new: true }
         );

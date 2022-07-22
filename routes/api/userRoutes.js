@@ -14,7 +14,7 @@ router
   .get(getUsers)
   .post(createUser);
 
-// /api/users/:userId
+// /api/users/:id
 router
   .route("/:id")
   .get(getSingleUser)
