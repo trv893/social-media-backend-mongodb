@@ -23,7 +23,6 @@ module.exports = {
   createThought(req, res) {
     Thoughts.create(req.body)
     .then(thought => {
-      console.log(thought._id);
       User.findOneAndUpdate(
           { _id: req.body.userId },
           { $push: { thoughts: thought._id } },
@@ -80,12 +79,12 @@ module.exports = {
       { $addToSet: { reactions: req.body } },
       { new: true, runValidators: true }
     )
-      .then((dbThoughtId) => {
+      .then((thoughtId) => {
         if (!dbThoughtId) {
           res.status(404).json({ message: "No thought found with this id" });
           return;
         }
-        res.json(dbThoughtId);
+        res.json(thoughtId);
       })
       .catch((err) => res.status(500).json(err));
   },
@@ -97,8 +96,8 @@ module.exports = {
       { $pull: { reactions: { reactionId: body.reactionId } } },
       { new: true, runValidators: true }
     )
-      .then((dbThoughtData) => {
-        if (!dbThoughtData) {
+      .then((thoughtData) => {
+        if (!thoughtData) {
           res.status(404).json({ message: "No thought found with this id" });
           return;
         }
