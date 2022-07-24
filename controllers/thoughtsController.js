@@ -80,13 +80,16 @@ module.exports = {
       { new: true, runValidators: true }
     )
       .then((thoughtId) => {
-        if (!dbThoughtId) {
+        if (!thoughtId) {
           res.status(404).json({ message: "No thought found with this id" });
           return;
         }
         res.json(thoughtId);
       })
-      .catch((err) => res.status(500).json(err));
+      .catch((err) =>{
+        console.log(err);
+        res.status(500).json(err)});
+      
   },
 
   // DELETE /api/thoughts/:id/reactions
